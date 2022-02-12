@@ -1,10 +1,16 @@
-import React from 'react';
+import { Header } from '../../components/Header';
 import { useAuthContext } from '../../contexts/AuthProvider';
+import { DefaultLayout } from './DefaultLayout';
 
 const Home = (props: { path: string }): JSX.Element => {
   const auth = useAuthContext();
 
-  return <div>{JSON.stringify(auth, null, 2)}</div>;
+  return (
+    <DefaultLayout>
+      <Header />
+      <div>home</div>
+    </DefaultLayout>
+  );
 };
 
 export default Home;
