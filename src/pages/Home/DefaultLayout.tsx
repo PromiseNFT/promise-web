@@ -16,7 +16,12 @@ const Wrapper = styled.main`
   overflow-y: scroll;
 
   width: 100%;
-  height: 100vh;
+  height: 100%;
 
   box-sizing: border-box;
+
+  background-color: red;
+
+  display: flex;
+  flex-direction: column;
 `;

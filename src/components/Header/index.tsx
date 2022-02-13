@@ -14,7 +14,7 @@ export const Header = (): JSX.Element => {
 const Wrapper = styled.div`
   z-index: 10;
 
-  position: sticky;
+  position: fixed;
 
   top: 0;
 
