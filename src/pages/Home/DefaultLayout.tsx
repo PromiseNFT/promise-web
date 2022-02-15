@@ -20,8 +20,6 @@ const Wrapper = styled.main`
 
   box-sizing: border-box;
 
-  background-color: red;
-
   display: flex;
   flex-direction: column;
 `;

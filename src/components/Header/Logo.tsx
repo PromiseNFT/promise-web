@@ -3,13 +3,7 @@ import { Button, styled, Typography } from '@mui/material';
 export const Logo = (): JSX.Element => {
   return (
     <Wrapper>
-      <Typography
-        variant='h6'
-        noWrap
-        component='div'
-        color='green'
-        sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-      >
+      <Typography fontSize={24} fontWeight='bold' color='black'>
         Promise
       </Typography>
     </Wrapper>
@@ -18,7 +12,7 @@ export const Logo = (): JSX.Element => {
 
 const Wrapper = styled(Button)`
   position: absolute;
-  padding: inherit;
+  z-index: 20;
   left: 0;
   height: 100%;
 `;

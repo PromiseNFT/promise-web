@@ -7,7 +7,6 @@ export const ConnectButton = (): JSX.Element => {
 
   return (
     <Wrapper>
-      <KlayText>{address}</KlayText>
       <Button variant='contained' color='success' onClick={onClick}>
         <AddressText>{address}</AddressText>
       </Button>
@@ -23,8 +22,6 @@ const Wrapper = styled(Box)`
   flex-direction: row;
   align-items: center;
 `;
-
-const KlayText = styled(Typography)``;
 
 const Button = styled(MuiButton)`
   padding: 15px;

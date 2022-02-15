@@ -14,7 +14,7 @@ export const Header = (): JSX.Element => {
 const Wrapper = styled.div`
   z-index: 10;
 
-  position: fixed;
+  position: absolute;
 
   top: 0;
 
@@ -25,9 +25,6 @@ const Wrapper = styled.div`
 
   display: flex;
   align-items: center;
-
-  padding-right: 1.375rem;
-  padding-left: 1.375rem;
 
   flex-direction: row;
   align-items: center;

@@ -1,6 +1,6 @@
-import { Container, styled } from '@mui/material';
-import { CardComponent } from '../../components/Cards/CardComponent';
+import { Floating } from '../../components/Floating';
 import { Header } from '../../components/Header';
+import { PromiseList } from '../../components/PromiseList';
 import { useAuthContext } from '../../contexts/AuthProvider';
 import { DefaultLayout } from './DefaultLayout';
 
@@ -10,20 +10,10 @@ const Home = (props: { path: string }): JSX.Element => {
   return (
     <DefaultLayout>
       <Header />
-      <Wrapper>
-        <CardComponent />
-      </Wrapper>
+      <PromiseList />
+      <Floating />
     </DefaultLayout>
   );
 };
-
-const Wrapper = styled(Container)`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items: center;
-  background-color: blue;
-  margin-top: 3.125rem;
-`;
 
 export default Home;
