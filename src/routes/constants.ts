@@ -1,4 +1,4 @@
-import { lazy } from 'react';
+import React, { lazy, ReactNode } from 'react';
 import { Route } from 'react-router-dom';
 
 // import Posts from "@/pages/Posts";
@@ -6,6 +6,7 @@ import { RouteAuth } from './RouteAuth';
 import { RouteUnAuth } from './RouteUnauth';
 
 const Home = lazy(() => import('../pages/Home'));
+const CreatePromise = lazy(() => import('../pages/CreatePromise'));
 
 export const ROUTE_COMPONENTS = {
   auth: RouteAuth,
@@ -13,10 +14,23 @@ export const ROUTE_COMPONENTS = {
   any: Route,
 };
 
-export const ROUTES = [
+interface RoutesType {
+  path: string;
+  component: ReactNode;
+  routeComponent: any;
+  exact: boolean;
+}
+
+export const ROUTES: RoutesType[] = [
   {
     path: '/',
     component: Home,
+    routeComponent: ROUTE_COMPONENTS.auth,
+    exact: true,
+  },
+  {
+    path: '/createPromise',
+    component: CreatePromise,
     routeComponent: ROUTE_COMPONENTS.auth,
     exact: true,
   },

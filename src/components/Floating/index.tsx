@@ -1,7 +1,10 @@
 import { GroupAdd } from '@mui/icons-material';
 import { Button } from '@mui/material';
+import { useFloating } from './useFloating';
 
 export const Floating = (): JSX.Element => {
+  const { onClick } = useFloating();
+
   return (
     <Button
       sx={{
@@ -15,6 +18,7 @@ export const Floating = (): JSX.Element => {
         borderWidth: 1,
         zIndex: 999,
       }}
+      onClick={onClick}
     >
       <GroupAdd sx={{ fontSize: 25 }} />
     </Button>

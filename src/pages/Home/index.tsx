@@ -1,15 +1,15 @@
 import { Floating } from '../../components/Floating';
-import { Header } from '../../components/Header';
+import { HomeHeader } from '../../components/HomeHeader';
 import { PromiseList } from '../../components/PromiseList';
 import { useAuthContext } from '../../contexts/AuthProvider';
-import { DefaultLayout } from './DefaultLayout';
+import { DefaultLayout } from '../../components/Common/DefaultLayout';
 
 const Home = (props: { path: string }): JSX.Element => {
   const auth = useAuthContext();
 
   return (
     <DefaultLayout>
-      <Header />
+      <HomeHeader />
       <PromiseList />
       <Floating />
     </DefaultLayout>
