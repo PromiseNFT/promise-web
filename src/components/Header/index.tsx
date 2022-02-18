@@ -10,7 +10,7 @@ export const Header = (props: DetailHeaderProps): JSX.Element => {
 const Wrapper = styled.header`
   z-index: 10;
 
-  position: sticky;
+  position: fixed;
 
   top: 0;
 
@@ -24,6 +24,8 @@ const Wrapper = styled.header`
 
   padding-right: 1.375rem;
   padding-left: 1.375rem;
+
+  background-color: white;
 `;
 
 const Center = styled.div`
