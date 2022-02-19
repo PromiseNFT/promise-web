@@ -1,16 +1,13 @@
 import { Button as MuiButton, styled } from '@mui/material';
 import { MouseEventHandler } from 'react';
-import { useHistory } from 'react-router-dom';
 
-export const CreateButton = (): JSX.Element => {
-  const { goBack } = useHistory();
+interface Props {
+  onClick: MouseEventHandler<HTMLButtonElement>;
+}
 
-  const handleClick: MouseEventHandler<HTMLButtonElement> = () => {
-    goBack();
-  };
-
+export const CreateButton = ({ onClick }: Props): JSX.Element => {
   return (
-    <Button onClick={handleClick} variant='contained'>
+    <Button onClick={onClick} variant='contained'>
       약속 만들기
     </Button>
   );

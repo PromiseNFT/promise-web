@@ -4,7 +4,6 @@ import { useHistory } from 'react-router-dom';
 import { DefaultLayout } from '../../components/Common/DefaultLayout';
 import { Header } from '../../components/Header';
 import { PromiseFrom } from '../../components/PromiseForm';
-import { CreateButton } from '../../components/PromiseForm/CreateButton';
 
 const CreatePromise = (): JSX.Element => {
   const { goBack } = useHistory();
@@ -18,7 +17,6 @@ const CreatePromise = (): JSX.Element => {
       </Header>
       <Container
         sx={{
-          backgroundColor: 'red',
           display: 'flex',
           width: 300,
           height: '100%',
@@ -28,7 +26,6 @@ const CreatePromise = (): JSX.Element => {
         }}
       >
         <PromiseFrom />
-        <CreateButton />
       </Container>
     </DefaultLayout>
   );
