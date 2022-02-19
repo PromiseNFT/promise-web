@@ -1,4 +1,4 @@
-import { Box, styled, TextField } from '@mui/material';
+import { Box, Modal, styled, SxProps, TextField } from '@mui/material';
 import {
   Place,
   AccessTime,
@@ -7,11 +7,36 @@ import {
   Description,
 } from '@mui/icons-material';
 import { useInputs } from '../../utils/hooks/useInputs';
-import { useEffect } from 'react';
+import { ChangeEvent, useEffect } from 'react';
 import { CreateButton } from './CreateButton';
 import { useHistory } from 'react-router-dom';
+import { useModal } from '../../utils/hooks/useModal';
+import Calendar from 'react-calendar';
+import { format } from 'date-fns';
 
-const initialInputs = {
+const style: SxProps = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 200,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
+
+interface InputType {
+  date: Date;
+  time: string;
+  place: string;
+  title: string;
+  description: string;
+  peopleCount: string;
+}
+
+const initialInputs: InputType = {
+  date: new Date(),
   time: '',
   place: '',
   title: '',
@@ -21,6 +46,7 @@ const initialInputs = {
 
 export const PromiseFrom = (): JSX.Element => {
   const [input, setInput] = useInputs(initialInputs);
+  const { isOpen, handleOpen, handleClose } = useModal();
 
   const { goBack } = useHistory();
 
@@ -34,19 +60,31 @@ export const PromiseFrom = (): JSX.Element => {
     goBack();
   };
 
-  useEffect(() => {
-    console.log('input : ', input);
-  }, [input]);
+  const handleChangeText =
+    (key: keyof InputType) => (e: ChangeEvent<HTMLInputElement>) => {
+      setInput(key)(e.target.value);
+    };
 
   return (
     <>
       <InputWrapper>
         <AccessTime />
         <TextField
+          id='date'
+          value={format(input.date, 'yyyy년 MM월 dd일')}
+          onClick={handleOpen}
+          label='날짜을 입력해주세요.'
+          variant='outlined'
+        />
+      </InputWrapper>
+      <InputWrapper>
+        <AccessTime />
+        <TextField
           id='time'
           value={input.time}
-          onChange={setInput('time')}
-          label='약속 시간을 입력해주세요.'
+          onChange={handleChangeText('time')}
+          onClick={handleOpen}
+          label='시간을 입력해주세요.'
           variant='outlined'
         />
       </InputWrapper>
@@ -55,7 +93,7 @@ export const PromiseFrom = (): JSX.Element => {
         <TextField
           id='place'
           value={input.place}
-          onChange={setInput('place')}
+          onChange={handleChangeText('place')}
           label='장소를 입력해주세요.'
           variant='outlined'
         />
@@ -65,7 +103,7 @@ export const PromiseFrom = (): JSX.Element => {
         <TextField
           id='title'
           value={input.title}
-          onChange={setInput('title')}
+          onChange={handleChangeText('title')}
           label='제목을 입력해주세요.'
           variant='outlined'
         />
@@ -75,7 +113,7 @@ export const PromiseFrom = (): JSX.Element => {
         <TextField
           id='description'
           value={input.description}
-          onChange={setInput('description')}
+          onChange={handleChangeText('description')}
           label='내용을 입력해주세요.'
           variant='outlined'
         />
@@ -85,12 +123,28 @@ export const PromiseFrom = (): JSX.Element => {
         <TextField
           id='peopleCount'
           value={input.peopleCount}
-          onChange={setInput('peopleCount')}
+          onChange={handleChangeText('peopleCount')}
           label='인원을 입력해주세요.'
           variant='outlined'
         />
       </InputWrapper>
       <CreateButton onClick={handleClick} />
+      <Modal
+        open={isOpen}
+        onClose={handleClose}
+        aria-labelledby='modal-modal-title'
+        aria-describedby='modal-modal-description'
+      >
+        <Box sx={style}>
+          <Calendar
+            value={input.date}
+            onChange={(value: Date, event: ChangeEvent<HTMLInputElement>) => {
+              setInput('date')(value);
+              handleClose();
+            }}
+          />
+        </Box>
+      </Modal>
     </>
   );
 };

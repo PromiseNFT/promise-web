@@ -1,15 +1,18 @@
-import { ChangeEvent, useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export function useInputs<T extends {}>(
   initialValues: T,
-): [T, (name: keyof T) => (text: ChangeEvent<HTMLInputElement>) => void] {
+): [T, (name: keyof T) => (value: string | Date) => void] {
   const [inputs, setInputs] = useState<T>(initialValues);
 
   const handleChange = useCallback(
-    (name: keyof T): ((text: ChangeEvent<HTMLInputElement>) => void) =>
-      (text: ChangeEvent<HTMLInputElement>): void =>
-        setInputs((state) => ({ ...state, [name]: text.target.value })),
+    (name: keyof T): ((value: string | Date) => void) =>
+      (value: string | Date): void =>
+        setInputs((state) => ({
+          ...state,
+          [name]: value,
+        })),
     [setInputs],
   );
 
