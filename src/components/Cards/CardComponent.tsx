@@ -41,7 +41,7 @@ export const CardComponent = ({
         }}
         color='inherit'
       >
-        <CardContent>
+        <CardContent sx={{ padding: 0 }}>
           <Box
             sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}
           >

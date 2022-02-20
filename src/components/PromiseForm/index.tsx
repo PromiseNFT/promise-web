@@ -164,6 +164,7 @@ export const PromiseFrom = ({ promiseType }: ParamType): JSX.Element => {
         </Button>
       )}
       {promiseType === 'read' && (
+        // 이거 혹은 참여하기
         <Button onClick={handleRecordClick} variant='contained'>
           소중한 약속 기록하기
         </Button>
