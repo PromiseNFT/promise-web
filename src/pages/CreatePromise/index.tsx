@@ -1,12 +1,21 @@
 import { ArrowBack } from '@mui/icons-material';
 import { Container } from '@mui/material';
-import { useHistory } from 'react-router-dom';
+import { useState } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 import { DefaultLayout } from '../../components/Common/DefaultLayout';
 import { Header } from '../../components/Header';
 import { PromiseFrom } from '../../components/PromiseForm';
+import { ParamType } from '../../types';
+import { Edit, Delete } from '@mui/icons-material';
+import { Spacer } from '../../components/Common/Spacer';
 
 const CreatePromise = (): JSX.Element => {
-  const { goBack } = useHistory();
+  const { goBack } = useHistory<ParamType>();
+  const { state } = useLocation<ParamType>();
+  const [promiseType, setPromiseType] = useState<ParamType['promiseType']>(
+    state.promiseType,
+  );
+
   return (
     <DefaultLayout>
       <Header>
@@ -14,6 +23,16 @@ const CreatePromise = (): JSX.Element => {
           <ArrowBack onClick={goBack} />
         </Header.Left>
         <Header.Center>약속 만들기</Header.Center>
+        {promiseType === 'read' && (
+          <Header.Right>
+            <Delete />
+            <Edit
+              onClick={() => {
+                setPromiseType('edit');
+              }}
+            />
+          </Header.Right>
+        )}
       </Header>
       <Container
         sx={{
@@ -25,7 +44,7 @@ const CreatePromise = (): JSX.Element => {
           marginTop: 8,
         }}
       >
-        <PromiseFrom />
+        <PromiseFrom promiseType={promiseType} />
       </Container>
     </DefaultLayout>
   );

@@ -1,4 +1,11 @@
-import { Box, Modal, styled, SxProps, TextField } from '@mui/material';
+import {
+  Box,
+  Button as MuiButton,
+  Modal,
+  styled,
+  SxProps,
+  TextField,
+} from '@mui/material';
 import {
   Place,
   AccessTime,
@@ -7,12 +14,12 @@ import {
   Description,
 } from '@mui/icons-material';
 import { useInputs } from '../../utils/hooks/useInputs';
-import { ChangeEvent, useEffect } from 'react';
-import { CreateButton } from './CreateButton';
+import { ChangeEvent } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useModal } from '../../utils/hooks/useModal';
 import Calendar from 'react-calendar';
 import { format } from 'date-fns';
+import { ParamType } from '../../types';
 
 const style: SxProps = {
   position: 'absolute',
@@ -44,19 +51,36 @@ const initialInputs: InputType = {
   peopleCount: '',
 };
 
-export const PromiseFrom = (): JSX.Element => {
+export const PromiseFrom = ({ promiseType }: ParamType): JSX.Element => {
   const [input, setInput] = useInputs(initialInputs);
   const { isOpen, handleOpen, handleClose } = useModal();
 
   const { goBack } = useHistory();
 
-  const handleClick = () => {
+  const handleCreateClick = () => {
+    // 만들기 api
     const isExistEmpty = Object.keys(input).some((item) => item === '');
 
     if (isExistEmpty) {
       alert('모두 입력해 주세요');
     }
 
+    goBack();
+  };
+
+  const handleEditClick = () => {
+    // 수정 api
+    const isExistEmpty = Object.keys(input).some((item) => item === '');
+
+    if (isExistEmpty) {
+      alert('모두 입력해 주세요');
+    }
+
+    goBack();
+  };
+
+  const handleRecordClick = () => {
+    // 기록 api
     goBack();
   };
 
@@ -72,9 +96,10 @@ export const PromiseFrom = (): JSX.Element => {
         <TextField
           id='date'
           value={format(input.date, 'yyyy년 MM월 dd일')}
-          onClick={handleOpen}
+          onClick={promiseType === 'read' ? undefined : handleOpen}
           label='날짜을 입력해주세요.'
           variant='outlined'
+          disabled={promiseType === 'read'}
         />
       </InputWrapper>
       <InputWrapper>
@@ -85,6 +110,7 @@ export const PromiseFrom = (): JSX.Element => {
           onChange={handleChangeText('time')}
           label='시간을 입력해주세요.'
           variant='outlined'
+          disabled={promiseType === 'read'}
         />
       </InputWrapper>
       <InputWrapper>
@@ -95,6 +121,7 @@ export const PromiseFrom = (): JSX.Element => {
           onChange={handleChangeText('place')}
           label='장소를 입력해주세요.'
           variant='outlined'
+          disabled={promiseType === 'read'}
         />
       </InputWrapper>
       <InputWrapper>
@@ -105,6 +132,7 @@ export const PromiseFrom = (): JSX.Element => {
           onChange={handleChangeText('title')}
           label='제목을 입력해주세요.'
           variant='outlined'
+          disabled={promiseType === 'read'}
         />
       </InputWrapper>
       <InputWrapper>
@@ -116,6 +144,7 @@ export const PromiseFrom = (): JSX.Element => {
           label='내용을 입력해주세요.'
           variant='outlined'
           multiline={true}
+          disabled={promiseType === 'read'}
         />
       </InputWrapper>
       <InputWrapper>
@@ -126,9 +155,24 @@ export const PromiseFrom = (): JSX.Element => {
           onChange={handleChangeText('peopleCount')}
           label='인원을 입력해주세요.'
           variant='outlined'
+          disabled={promiseType === 'read'}
         />
       </InputWrapper>
-      <CreateButton onClick={handleClick} />
+      {promiseType === 'create' && (
+        <Button onClick={handleCreateClick} variant='contained'>
+          약속 만들기
+        </Button>
+      )}
+      {promiseType === 'read' && (
+        <Button onClick={handleRecordClick} variant='contained'>
+          소중한 약속 기록하기
+        </Button>
+      )}
+      {promiseType === 'edit' && (
+        <Button onClick={handleEditClick} variant='contained'>
+          저장 하기
+        </Button>
+      )}
       <Modal
         open={isOpen}
         onClose={handleClose}
@@ -153,4 +197,8 @@ const InputWrapper = styled(Box)({
   display: 'flex',
   alignItems: 'center',
   marginBottom: 10,
+});
+
+const Button = styled(MuiButton)({
+  width: '100%',
 });

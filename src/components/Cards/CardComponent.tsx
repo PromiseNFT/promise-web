@@ -3,10 +3,12 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { Place, Share } from '@mui/icons-material';
-import { Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { format } from 'date-fns';
 import { CardTimeOut } from './CardTimeOut';
+import { useHistory } from 'react-router-dom';
+import { ParamType } from '../../types';
 
 export interface CardType {
   title: string;
@@ -21,6 +23,7 @@ export const CardComponent = ({
   date,
   time,
 }: CardType): JSX.Element => {
+  const { push } = useHistory<ParamType>();
   return (
     <Card
       sx={{
@@ -32,29 +35,36 @@ export const CardComponent = ({
         justifyContent: 'space-around',
       }}
     >
-      <CardContent>
-        <Box
-          sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}
-        >
-          <Typography variant='body2' color='text.secondary'>
-            {format(date, 'yy.MM.dd')} {time}{' '}
-          </Typography>
-          <CardTimeOut date={date} />
-        </Box>
-        <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-          <Typography variant='h5' component='div'>
-            {title}
-          </Typography>
-        </Box>
-        <Box
-          sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}
-        >
-          <Place sx={{ fontSize: 15, marginRight: 1 }} />
-          <Typography variant='body2' color='text.secondary'>
-            {location}
-          </Typography>
-        </Box>
-      </CardContent>
+      <Button
+        onClick={() => {
+          push('/createPromise', { promiseType: 'read' });
+        }}
+        color='inherit'
+      >
+        <CardContent>
+          <Box
+            sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}
+          >
+            <Typography variant='body2' color='text.secondary'>
+              {format(date, 'yy.MM.dd')} {time}{' '}
+            </Typography>
+            <CardTimeOut date={date} />
+          </Box>
+          <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+            <Typography variant='h5' component='div'>
+              {title}
+            </Typography>
+          </Box>
+          <Box
+            sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}
+          >
+            <Place sx={{ fontSize: 15, marginRight: 1 }} />
+            <Typography variant='body2' color='text.secondary'>
+              {location}
+            </Typography>
+          </Box>
+        </CardContent>
+      </Button>
       <CardActions>
         <CopyToClipboard
           text='ㄴㅇㄹㄴㅇㄹㄴㅇㄹ'
