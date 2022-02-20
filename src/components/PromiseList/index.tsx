@@ -2,21 +2,48 @@ import { Box, Container, styled, Typography } from '@mui/material';
 import { CardComponent, CardType } from '../Cards/CardComponent';
 
 const card_list: CardType[] = [
-  { title: '모임', location: '강남역 1번출구', time: '2018-03-20' },
-  { title: '모임2', location: '강남역 2번출구', time: '2019-04-20' },
-  { title: '모임3', location: '강남역 3번출구', time: '2020-05-20' },
-  { title: '모임4', location: '강남역 4번출구', time: '2021-06-20' },
-  { title: '모임5', location: '강남역 5번출구', time: '2022-07-20' },
-  { title: '모임5', location: '강남역 5번출구', time: '2022-07-20' },
-  { title: '모임5', location: '강남역 5번출구', time: '2022-07-20' },
-  { title: '모임5', location: '강남역 5번출구', time: '2022-07-20' },
-  { title: '모임5', location: '강남역 5번출구', time: '2022-07-20' },
-  { title: '모임5', location: '강남역 5번출구', time: '2022-07-20' },
+  {
+    title: '모임',
+    location: '강남역 1번출구',
+    date: new Date('2018-03-20'),
+    time: '점심 이후',
+  },
+  {
+    title: '모임2',
+    location: '강남역 2번출구',
+    date: new Date('2019-04-20'),
+    time: '점심 이후',
+  },
+  {
+    title: '모임3',
+    location: '강남역 3번출구',
+    date: new Date('2020-05-20'),
+    time: '점심 이후',
+  },
+  {
+    title: '모임4',
+    location: '강남역 4번출구',
+    date: new Date('2021-06-20'),
+    time: '점심 이후',
+  },
+  {
+    title: '모임5',
+    location: '강남역 5번출구',
+    date: new Date('2022-02-21'),
+    time: '점심 이후',
+  },
 ];
 
 export const PromiseList = (): JSX.Element => {
-  const cards = card_list.map(({ title, location, time }: CardType) => {
-    return <CardComponent title={title} location={location} time={time} />;
+  const cards = card_list.map(({ title, location, date, time }: CardType) => {
+    return (
+      <CardComponent
+        title={title}
+        location={location}
+        date={date}
+        time={time}
+      />
+    );
   });
 
   return (

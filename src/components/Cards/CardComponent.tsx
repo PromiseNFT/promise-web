@@ -5,16 +5,20 @@ import Typography from '@mui/material/Typography';
 import { Place, Share } from '@mui/icons-material';
 import { Box } from '@mui/material';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { format } from 'date-fns';
+import { CardTimeOut } from './CardTimeOut';
 
 export interface CardType {
   title: string;
   location: string;
-  time: Date | string;
+  date: Date;
+  time: string;
 }
 
 export const CardComponent = ({
   title,
   location,
+  date,
   time,
 }: CardType): JSX.Element => {
   return (
@@ -29,10 +33,13 @@ export const CardComponent = ({
       }}
     >
       <CardContent>
-        <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+        <Box
+          sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}
+        >
           <Typography variant='body2' color='text.secondary'>
-            {time}
+            {format(date, 'yy.MM.dd')} {time}{' '}
           </Typography>
+          <CardTimeOut date={date} />
         </Box>
         <Box sx={{ display: 'flex', flexDirection: 'row' }}>
           <Typography variant='h5' component='div'>
