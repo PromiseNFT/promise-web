@@ -25,7 +25,7 @@ export const ROUTES: RoutesType[] = [
   {
     path: '/',
     component: Home,
-    routeComponent: ROUTE_COMPONENTS.auth,
+    routeComponent: ROUTE_COMPONENTS.unAuth,
     exact: true,
   },
   {

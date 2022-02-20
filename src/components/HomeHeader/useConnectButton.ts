@@ -2,6 +2,7 @@
 // @ts-ignore
 import { getResult, prepare, request } from 'klip-sdk';
 import { MouseEventHandler, useState } from 'react';
+import { useAuthContext } from '../../contexts/AuthProvider';
 
 interface Return {
   address: string;
@@ -39,28 +40,13 @@ declare global {
 const MAINNET_NETWORK_ID = 8217;
 
 export const useConnectButton = (): Return => {
+  const authContext = useAuthContext();
+
   const { klaytn } = window;
   const [address, setAddress] = useState<string>('CONNECT WALLET');
 
-  const kaikasLogin = async (): Promise<boolean> => {
-    if (klaytn === undefined) {
-      alert('카이카스를 설치해주세요.');
-      return false;
-    }
-
-    const wallet = await klaytn.enable();
-    const version = await klaytn.networkVersion;
-
-    if (wallet !== undefined && version === MAINNET_NETWORK_ID) {
-      setAddress(wallet[0]);
-      alert('지갑 연결 성공!');
-      return true;
-    }
-    return false;
-  };
-
   const onClick = async (): Promise<void> => {
-    const bappName = 'my app';
+    const bappName = '약속';
     const successLink = 'myApp://...';
     const failLink = 'myApp://...';
     const res = await prepare.auth({ bappName, successLink, failLink });
@@ -70,9 +56,15 @@ export const useConnectButton = (): Return => {
     } else if (res.request_key) {
       // request_key 보관
       request(res.request_key, () => alert('모바일 환경에서 실행해주세요'));
-      setTimeout(async () => {
-        alert(JSON.stringify(await getResult(res.request_key)));
-      }, 5000);
+      const interval = setInterval(async () => {
+        const response = await getResult(res.request_key);
+        if (response.status === 'completed') {
+          authContext?.setUser((prev) => {
+            return { ...prev, token: response.result.klaytn_address };
+          });
+          clearInterval(interval);
+        }
+      }, 1000);
     }
     // const loginSuccess = await kaikasLogin();
     // if (loginSuccess === true) {

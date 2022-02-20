@@ -5,7 +5,7 @@ import { useAuthContext } from '../contexts/AuthProvider';
 export const RouteAuth = (props: RouteProps): JSX.Element => {
   const auth = useAuthContext();
 
-  // if (!auth?.user.isAuthenticated) return <Redirect to='/login' />;
+  if (!auth?.user.token) return <Redirect to='/' />;
 
   return <Route {...props} />;
 };
