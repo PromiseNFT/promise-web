@@ -5,17 +5,9 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import {
-  Place,
-  ReadMore,
-  GroupAdd,
-  AccessTime,
-  Groups,
-  Title,
-  Description,
-  Image,
-} from '@mui/icons-material';
+import { Place, Share } from '@mui/icons-material';
 import { Box } from '@mui/material';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 export interface CardType {
   title: string;
@@ -28,6 +20,10 @@ export const CardComponent = ({
   location,
   time,
 }: CardType): JSX.Element => {
+  const snsShare = () => {
+    alert('ㅅㅂ');
+  };
+
   return (
     <Card
       sx={{
@@ -60,9 +56,14 @@ export const CardComponent = ({
         </Box>
       </CardContent>
       <CardActions>
-        <Button size='large' color='inherit'>
-          <ReadMore sx={{ fontSize: 40 }} />
-        </Button>
+        <CopyToClipboard
+          text='ㄴㅇㄹㄴㅇㄹㄴㅇㄹ'
+          onCopy={() => {
+            alert('링크가 복사되었습니다.\n친구에게 공유해주세요!');
+          }}
+        >
+          <Share sx={{ fontSize: 40 }} />
+        </CopyToClipboard>
       </CardActions>
     </Card>
   );
