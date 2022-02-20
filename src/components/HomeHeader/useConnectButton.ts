@@ -47,8 +47,8 @@ export const useConnectButton = (): Return => {
 
   const onClick = async (): Promise<void> => {
     const bappName = '약속';
-    const successLink = 'myApp://...';
-    const failLink = 'myApp://...';
+    const successLink = '';
+    const failLink = '';
     const res = await prepare.auth({ bappName, successLink, failLink });
     if (res.err) {
       // 에러 처리
