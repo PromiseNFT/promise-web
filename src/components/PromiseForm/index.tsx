@@ -83,7 +83,6 @@ export const PromiseFrom = (): JSX.Element => {
           id='time'
           value={input.time}
           onChange={handleChangeText('time')}
-          onClick={handleOpen}
           label='시간을 입력해주세요.'
           variant='outlined'
         />
@@ -116,6 +115,7 @@ export const PromiseFrom = (): JSX.Element => {
           onChange={handleChangeText('description')}
           label='내용을 입력해주세요.'
           variant='outlined'
+          multiline={true}
         />
       </InputWrapper>
       <InputWrapper>
