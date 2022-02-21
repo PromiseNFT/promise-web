@@ -7,7 +7,6 @@ import { Header } from '../../components/Header';
 import { PromiseFrom } from '../../components/PromiseForm';
 import { ParamType } from '../../types';
 import { Edit, Delete } from '@mui/icons-material';
-import { Spacer } from '../../components/Common/Spacer';
 
 const CreatePromise = (): JSX.Element => {
   const { goBack } = useHistory<ParamType>();

@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import { getResult, prepare, request } from 'klip-sdk';
 import {
   Box,
   Button as MuiButton,
@@ -84,6 +87,27 @@ export const PromiseFrom = ({ promiseType }: ParamType): JSX.Element => {
     goBack();
   };
 
+  const handleParticipationClick = async () => {
+    const bappName = '약속';
+    const successLink = '';
+    const failLink = '';
+    const res = await prepare.auth({ bappName, successLink, failLink });
+    if (res.err) {
+      // 에러 처리
+      console.log('res.err : ', res.err);
+    } else if (res.request_key) {
+      // request_key 보관
+      request(res.request_key, () => alert('모바일 환경에서 실행해주세요'));
+      const interval = setInterval(async () => {
+        const response = await getResult(res.request_key);
+        if (response.status === 'completed') {
+          alert('서명 완료!');
+          clearInterval(interval);
+        }
+      }, 1000);
+    }
+  };
+
   const handleChangeText =
     (key: keyof InputType) => (e: ChangeEvent<HTMLInputElement>) => {
       setInput(key)(e.target.value);
@@ -163,10 +187,14 @@ export const PromiseFrom = ({ promiseType }: ParamType): JSX.Element => {
           약속 만들기
         </Button>
       )}
-      {promiseType === 'read' && (
-        // 이거 혹은 참여하기
+      {/* {promiseType === 'read' && (
         <Button onClick={handleRecordClick} variant='contained'>
           소중한 약속 기록하기
+        </Button>
+      )} */}
+      {promiseType === 'read' && (
+        <Button onClick={handleParticipationClick} variant='contained'>
+          약속에 참여하기
         </Button>
       )}
       {promiseType === 'edit' && (

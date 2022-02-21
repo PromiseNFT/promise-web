@@ -1,11 +1,10 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { getResult, prepare, request } from 'klip-sdk';
-import { MouseEventHandler, useState } from 'react';
+import { MouseEventHandler } from 'react';
 import { useAuthContext } from '../../contexts/AuthProvider';
 
 interface Return {
-  address: string;
   onClick: MouseEventHandler<HTMLButtonElement>;
 }
 
@@ -33,8 +32,6 @@ declare global {
 export const useConnectButton = (): Return => {
   const authContext = useAuthContext();
 
-  const [address, setAddress] = useState<string>('CONNECT WALLET');
-
   const onClick = async (): Promise<void> => {
     const bappName = '약속';
     const successLink = '';
@@ -52,7 +49,6 @@ export const useConnectButton = (): Return => {
           authContext?.setUser((prev) => {
             return { ...prev, token: response.result.klaytn_address };
           });
-          setAddress(response.result.klaytn_address);
           clearInterval(interval);
         }
       }, 1000);
@@ -60,7 +56,6 @@ export const useConnectButton = (): Return => {
   };
 
   return {
-    address,
     onClick,
   };
 };

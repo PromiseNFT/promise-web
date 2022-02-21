@@ -1,14 +1,16 @@
 import { Box, Button as MuiButton, Typography } from '@mui/material';
 import { styled } from '@mui/system';
+import { useAuthContext } from '../../contexts/AuthProvider';
 import { useConnectButton } from './useConnectButton';
 
 export const ConnectButton = (): JSX.Element => {
-  const { address, onClick } = useConnectButton();
+  const { onClick } = useConnectButton();
+  const auth = useAuthContext();
 
   return (
     <Wrapper>
       <Button variant='contained' color='success' onClick={onClick}>
-        <AddressText>{address}</AddressText>
+        <AddressText>{auth?.user.token || 'CONNECT WALLET'}</AddressText>
       </Button>
     </Wrapper>
   );

@@ -1,4 +1,4 @@
-import React, { lazy, ReactNode } from 'react';
+import { lazy, ReactNode } from 'react';
 import { Route } from 'react-router-dom';
 
 // import Posts from "@/pages/Posts";
