@@ -46,7 +46,7 @@ export const CardComponent = ({
     >
       <Button
         onClick={() => {
-          push('/createPromise', { promiseType: 'read' });
+          push('/createPromise', { promiseType: 'read', id });
         }}
         color='inherit'
       >

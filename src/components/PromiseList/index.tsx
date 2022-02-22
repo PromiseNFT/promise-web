@@ -1,6 +1,6 @@
 import { Box, Container, styled, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { AppServer } from '../../utils/constants';
+import { AppServer } from '../../utils/api';
 import { CardComponent, CardType } from '../Cards/CardComponent';
 
 const card_list: CardType[] = [

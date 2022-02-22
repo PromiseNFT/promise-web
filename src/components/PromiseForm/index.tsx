@@ -22,7 +22,8 @@ import { useHistory } from 'react-router-dom';
 import { useModal } from '../../utils/hooks/useModal';
 import Calendar from 'react-calendar';
 import { format } from 'date-fns';
-import { ParamType } from '../../types';
+import { ContractDetail, ParamType } from '../../types';
+import { useAuthContext } from '../../contexts/AuthProvider';
 
 const style: SxProps = {
   position: 'absolute',
@@ -36,26 +37,14 @@ const style: SxProps = {
   p: 4,
 };
 
-interface InputType {
-  date: Date;
-  time: string;
-  place: string;
-  title: string;
-  description: string;
-  peopleCount: string;
+interface Props {
+  data: ContractDetail;
+  promiseType: ParamType['promiseType'];
 }
 
-const initialInputs: InputType = {
-  date: new Date(),
-  time: '',
-  place: '',
-  title: '',
-  description: '',
-  peopleCount: '',
-};
-
-export const PromiseFrom = ({ promiseType }: ParamType): JSX.Element => {
-  const [input, setInput] = useInputs(initialInputs);
+export const PromiseFrom = ({ data, promiseType }: Props): JSX.Element => {
+  const auth = useAuthContext();
+  const [input, setInput] = useInputs(data);
   const { isOpen, handleOpen, handleClose } = useModal();
 
   const { goBack } = useHistory();
@@ -109,7 +98,7 @@ export const PromiseFrom = ({ promiseType }: ParamType): JSX.Element => {
   };
 
   const handleChangeText =
-    (key: keyof InputType) => (e: ChangeEvent<HTMLInputElement>) => {
+    (key: keyof ContractDetail) => (e: ChangeEvent<HTMLInputElement>) => {
       setInput(key)(e.target.value);
     };
 
@@ -119,7 +108,10 @@ export const PromiseFrom = ({ promiseType }: ParamType): JSX.Element => {
         <AccessTime />
         <TextField
           id='date'
-          value={format(input.date, 'yyyy년 MM월 dd일')}
+          value={format(
+            typeof input.date === 'string' ? new Date(input.date) : input.date,
+            'yyyy년 MM월 dd일',
+          )}
           onClick={promiseType === 'read' ? undefined : handleOpen}
           label='날짜을 입력해주세요.'
           variant='outlined'
@@ -140,9 +132,9 @@ export const PromiseFrom = ({ promiseType }: ParamType): JSX.Element => {
       <InputWrapper>
         <Place />
         <TextField
-          id='place'
-          value={input.place}
-          onChange={handleChangeText('place')}
+          id='location'
+          value={input.location}
+          onChange={handleChangeText('location')}
           label='장소를 입력해주세요.'
           variant='outlined'
           disabled={promiseType === 'read'}
@@ -162,9 +154,9 @@ export const PromiseFrom = ({ promiseType }: ParamType): JSX.Element => {
       <InputWrapper>
         <Description />
         <TextField
-          id='description'
-          value={input.description}
-          onChange={handleChangeText('description')}
+          id='ctnt'
+          value={input.ctnt}
+          onChange={handleChangeText('ctnt')}
           label='내용을 입력해주세요.'
           variant='outlined'
           multiline={true}
@@ -174,9 +166,13 @@ export const PromiseFrom = ({ promiseType }: ParamType): JSX.Element => {
       <InputWrapper>
         <Groups />
         <TextField
-          id='peopleCount'
-          value={input.peopleCount}
-          onChange={handleChangeText('peopleCount')}
+          id='head_count'
+          value={
+            promiseType === 'read'
+              ? `${data.signs.length} / ${data.head_count}`
+              : input.head_count
+          }
+          onChange={handleChangeText('head_count')}
           label='인원을 입력해주세요.'
           variant='outlined'
           disabled={promiseType === 'read'}
@@ -187,17 +183,21 @@ export const PromiseFrom = ({ promiseType }: ParamType): JSX.Element => {
           약속 만들기
         </Button>
       )}
-      {/* {promiseType === 'read' && (
-        <Button onClick={handleRecordClick} variant='contained'>
-          소중한 약속 기록하기
-        </Button>
-      )} */}
-      {promiseType === 'read' && (
-        <Button onClick={handleParticipationClick} variant='contained'>
-          약속에 참여하기
-        </Button>
-      )}
+      {promiseType === 'read' &&
+        data.signs.some((v) => v.user_addr === auth?.user.token) &&
+        data.head_count === data.signs.length && (
+          <Button onClick={handleRecordClick} variant='contained'>
+            소중한 약속 기록하기
+          </Button>
+        )}
+      {promiseType === 'read' &&
+        data.signs.every((v) => v.user_addr !== auth?.user.token) && (
+          <Button onClick={handleParticipationClick} variant='contained'>
+            약속에 참여하기
+          </Button>
+        )}
       {promiseType === 'edit' && (
+        // TODO 저장 권한은?
         <Button onClick={handleEditClick} variant='contained'>
           저장 하기
         </Button>
@@ -210,7 +210,9 @@ export const PromiseFrom = ({ promiseType }: ParamType): JSX.Element => {
       >
         <Box sx={style}>
           <Calendar
-            value={input.date}
+            value={
+              typeof input.date === 'string' ? new Date(input.date) : input.date
+            }
             onChange={(value: Date, event: ChangeEvent<HTMLInputElement>) => {
               setInput('date')(value);
               handleClose();
