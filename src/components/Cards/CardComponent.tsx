@@ -11,13 +11,21 @@ import { useHistory } from 'react-router-dom';
 import { ParamType } from '../../types';
 
 export interface CardType {
+  id: number;
+  user_addr?: string;
+  crt_dttm?: string;
+  account_addr?: string;
+  account_pub_key?: string;
   title: string;
-  location: string;
+  ctnt?: string; //content
   date: Date;
   time: string;
+  location: string;
+  head_count?: number;
 }
 
 export const CardComponent = ({
+  id,
   title,
   location,
   date,
@@ -26,6 +34,7 @@ export const CardComponent = ({
   const { push } = useHistory<ParamType>();
   return (
     <Card
+      key={id}
       sx={{
         maxWidth: 345,
         margin: 1,
