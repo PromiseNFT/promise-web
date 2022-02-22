@@ -71,9 +71,12 @@ const CreatePromise = (): JSX.Element => {
         <Header.Left>
           <ArrowBack onClick={goBack} />
         </Header.Left>
-        <Header.Center>약속 만들기</Header.Center>
+        <Header.Center>
+          {data?.title ? data.title : '약속 만들기'}
+        </Header.Center>
         {promiseType === 'read' && (
           <Header.Right>
+            {/* 삭제 수정 권한은? */}
             <Delete />
             <Edit
               onClick={() => {
