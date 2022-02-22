@@ -24,6 +24,7 @@ import Calendar from 'react-calendar';
 import { format } from 'date-fns';
 import { ContractDetail, ParamType } from '../../types';
 import { useAuthContext } from '../../contexts/AuthProvider';
+import { AppServer } from '../../utils/api';
 
 const style: SxProps = {
   position: 'absolute',
@@ -49,7 +50,7 @@ export const PromiseFrom = ({ data, promiseType }: Props): JSX.Element => {
 
   const { goBack } = useHistory();
 
-  const handleCreateClick = () => {
+  const handleCreateClick = async () => {
     // 만들기 api
     const isExistEmpty = Object.keys(input).some((item) => item === '');
 
@@ -57,10 +58,15 @@ export const PromiseFrom = ({ data, promiseType }: Props): JSX.Element => {
       alert('모두 입력해 주세요');
     }
 
-    goBack();
+    try {
+      const result = await AppServer.createContract();
+      goBack();
+    } catch (error) {
+      console.log('error : ', error);
+    }
   };
 
-  const handleEditClick = () => {
+  const handleEditClick = async () => {
     // 수정 api
     const isExistEmpty = Object.keys(input).some((item) => item === '');
 
@@ -68,12 +74,23 @@ export const PromiseFrom = ({ data, promiseType }: Props): JSX.Element => {
       alert('모두 입력해 주세요');
     }
 
-    goBack();
+    try {
+      const result = await AppServer.updateContract();
+      goBack();
+    } catch (error) {
+      console.log('error : ', error);
+    }
   };
 
-  const handleRecordClick = () => {
-    // 기록 api
-    goBack();
+  const handleRecordClick = async () => {
+    if (data?.id) {
+      try {
+        const result = await AppServer.publishContract(data.id);
+        goBack();
+      } catch (error) {
+        console.log('error : ', error);
+      }
+    }
   };
 
   const handleParticipationClick = async () => {
@@ -87,11 +104,26 @@ export const PromiseFrom = ({ data, promiseType }: Props): JSX.Element => {
     } else if (res.request_key) {
       // request_key 보관
       request(res.request_key, () => alert('모바일 환경에서 실행해주세요'));
+      let time = 0;
       const interval = setInterval(async () => {
-        const response = await getResult(res.request_key);
-        if (response.status === 'completed') {
-          alert('서명 완료!');
+        if (time > 60) {
+          alert('서명 실패!');
           clearInterval(interval);
+        }
+        const response = await getResult(res.request_key);
+        time++;
+        if (response.status === 'completed') {
+          try {
+            if (data?.id) {
+              const result = await AppServer.signContract(data.id);
+              alert('참여완료!');
+              goBack();
+            }
+            clearInterval(interval);
+          } catch (error) {
+            console.log('error : ', error);
+            clearInterval(interval);
+          }
         }
       }, 1000);
     }
