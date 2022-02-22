@@ -45,13 +45,25 @@ const tempData = {
   // },
 };
 
+const initialData = {
+  user_addr: 'Klip Address',
+  title: '',
+  ctnt: '',
+  date: String(new Date()),
+  time: '',
+  location: '',
+  head_count: 0, // The number of Contract's signers
+};
+
 const CreatePromise = (): JSX.Element => {
   const { goBack } = useHistory<ParamType>();
   const { state } = useLocation<ParamType>();
   const [promiseType, setPromiseType] = useState<ParamType['promiseType']>(
     state.promiseType,
   );
-  const [data, setData] = useState(tempData);
+  const [data, setData] = useState(
+    state.promiseType === 'create' ? initialData : tempData,
+  );
 
   const getContractDetail = useCallback(async () => {
     if (state.id) {

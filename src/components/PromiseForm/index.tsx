@@ -201,8 +201,10 @@ export const PromiseFrom = ({ data, promiseType }: Props): JSX.Element => {
           id='head_count'
           value={
             promiseType === 'read'
-              ? `${data.signs.length} / ${data.head_count}`
+              ? `${data?.signs?.length} / ${data.head_count}`
               : input.head_count
+              ? input.head_count
+              : ''
           }
           onChange={handleChangeText('head_count')}
           label='인원을 입력해주세요.'
@@ -216,14 +218,14 @@ export const PromiseFrom = ({ data, promiseType }: Props): JSX.Element => {
         </Button>
       )}
       {promiseType === 'read' &&
-        data.signs.some((v) => v.user_addr === auth?.user.token) &&
-        data.head_count === data.signs.length && (
+        data?.signs?.some((v) => v.user_addr === auth?.user.token) &&
+        data.head_count === data?.signs?.length && (
           <Button onClick={handleRecordClick} variant='contained'>
             소중한 약속 기록하기
           </Button>
         )}
       {promiseType === 'read' &&
-        data.signs.every((v) => v.user_addr !== auth?.user.token) && (
+        data?.signs?.every((v) => v.user_addr !== auth?.user.token) && (
           <Button onClick={handleParticipationClick} variant='contained'>
             약속에 참여하기
           </Button>

@@ -4,7 +4,7 @@ export interface ParamType {
 }
 
 export interface ContractDetail {
-  id: number; // BIGINT
+  id?: number; // BIGINT
   user_addr?: string;
   crt_dttm?: string;
   account_addr?: string;
@@ -15,7 +15,7 @@ export interface ContractDetail {
   time: string;
   location: string;
   head_count: number; // The number of Contract's signers
-  signs: { id: number; sign_dttm?: Date; user_addr: string }[];
+  signs?: { id: number; sign_dttm?: Date; user_addr: string }[];
   tx?: {
     // If Null -> The contract is that no transaction has been created
     id: number;
