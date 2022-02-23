@@ -6,7 +6,7 @@ interface Props {
 }
 
 export const CardTimeOut = ({ date }: Props): JSX.Element => {
-  const diff = differenceInDays(date, new Date()) + 1;
+  const diff = differenceInDays(new Date(date), new Date()) + 1;
 
   if (diff === 0) {
     return (

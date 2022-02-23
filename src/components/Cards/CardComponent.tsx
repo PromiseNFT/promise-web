@@ -55,7 +55,7 @@ export const CardComponent = ({
             sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}
           >
             <Typography variant='body2' color='text.secondary'>
-              {format(date, 'yy.MM.dd')} {time}{' '}
+              {format(new Date(date), 'yy.MM.dd')} {time}{' '}
             </Typography>
             <CardTimeOut date={date} />
           </Box>

@@ -17,7 +17,7 @@ import {
   Description,
 } from '@mui/icons-material';
 import { useInputs } from '../../utils/hooks/useInputs';
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useModal } from '../../utils/hooks/useModal';
 import Calendar from 'react-calendar';
@@ -45,7 +45,18 @@ interface Props {
 
 export const PromiseFrom = ({ data, promiseType }: Props): JSX.Element => {
   const auth = useAuthContext();
-  const [input, setInput] = useInputs(data);
+  // const [input, setInput] = useInputs(data);
+  const [input, setInput] = useState<ContractDetail>(data);
+
+  const handleChange = useCallback(
+    (name: keyof ContractDetail): ((value: string | Date) => void) =>
+      (value: string | Date): void =>
+        setInput((state) => ({
+          ...state,
+          [name]: value,
+        })),
+    [setInput],
+  );
   const { isOpen, handleOpen, handleClose } = useModal();
 
   const { goBack } = useHistory();
@@ -59,7 +70,14 @@ export const PromiseFrom = ({ data, promiseType }: Props): JSX.Element => {
     }
 
     try {
-      const result = await AppServer.createContract();
+      const result = await AppServer.createContract({
+        title: input.title,
+        ctnt: input.ctnt,
+        date: input.date as string,
+        time: input.time,
+        location: input.location,
+        head_count: input.head_count,
+      });
       goBack();
     } catch (error) {
       console.log('error : ', error);
@@ -131,8 +149,15 @@ export const PromiseFrom = ({ data, promiseType }: Props): JSX.Element => {
 
   const handleChangeText =
     (key: keyof ContractDetail) => (e: ChangeEvent<HTMLInputElement>) => {
-      setInput(key)(e.target.value);
+      handleChange(key)(e.target.value);
     };
+
+  console.log('data : ', data);
+  console.log('input : ', input);
+
+  // useEffect(() => {
+  //   setInput(data);
+  // }, []);
 
   return (
     <>
@@ -248,7 +273,7 @@ export const PromiseFrom = ({ data, promiseType }: Props): JSX.Element => {
               typeof input.date === 'string' ? new Date(input.date) : input.date
             }
             onChange={(value: Date, event: ChangeEvent<HTMLInputElement>) => {
-              setInput('date')(value);
+              handleChange('date')(value);
               handleClose();
             }}
           />

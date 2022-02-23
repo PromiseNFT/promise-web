@@ -11,7 +11,7 @@ export interface ContractDetail {
   account_pub_key?: string;
   title: string;
   ctnt: string;
-  date: string;
+  date: string | Date;
   time: string;
   location: string;
   head_count: number; // The number of Contract's signers
