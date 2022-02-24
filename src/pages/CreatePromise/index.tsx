@@ -8,6 +8,7 @@ import { PromiseFrom } from '../../components/PromiseForm';
 import { ContractDetail, ParamType } from '../../types';
 import { Edit, Delete } from '@mui/icons-material';
 import { AppServer } from '../../utils/api';
+import { useAuthContext } from '../../contexts/AuthProvider';
 
 const initialData = {
   user_addr: 'Klip Address',
@@ -20,6 +21,7 @@ const initialData = {
 };
 
 const CreatePromise = (): JSX.Element => {
+  const auth = useAuthContext();
   const { goBack } = useHistory<ParamType>();
   const { state } = useLocation<ParamType>();
   const [promiseType, setPromiseType] = useState<ParamType['promiseType']>(
@@ -34,6 +36,17 @@ const CreatePromise = (): JSX.Element => {
       setData(result.data || initialData);
     }
   }, [state.id, setData]);
+
+  const handleDelete = async (): Promise<void> => {
+    if (data?.id !== undefined && confirm('약속을 삭제하시겠습니까?')) {
+      await AppServer.deleteContract(data.id);
+      goBack();
+    }
+  };
+
+  const handleEdit = (): void => {
+    setPromiseType('edit');
+  };
 
   const render = useMemo(() => {
     if (data !== undefined) {
@@ -59,17 +72,15 @@ const CreatePromise = (): JSX.Element => {
         <Header.Center>
           {data?.title ? data.title : '약속 만들기'}
         </Header.Center>
-        {promiseType === 'read' && (
-          <Header.Right>
-            {/* 삭제 수정 권한은? */}
-            <Delete />
-            <Edit
-              onClick={() => {
-                setPromiseType('edit');
-              }}
-            />
-          </Header.Right>
-        )}
+        {/* 삭제 수정 권한은? */}
+        {promiseType === 'read' &&
+          auth?.user.token !== undefined &&
+          data?.user_addr === auth.user.token && (
+            <Header.Right>
+              <Delete onClick={handleDelete} />
+              <Edit onClick={handleEdit} />
+            </Header.Right>
+          )}
       </Header>
       <Container
         sx={{

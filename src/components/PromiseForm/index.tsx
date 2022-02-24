@@ -88,12 +88,22 @@ export const PromiseFrom = ({ data, promiseType }: Props): JSX.Element => {
     // 수정 api
     const isExistEmpty = Object.keys(input).some((item) => item === '');
 
-    if (isExistEmpty) {
+    if (isExistEmpty || data?.id === undefined) {
       alert('모두 입력해 주세요');
+      return;
     }
 
     try {
-      const result = await AppServer.updateContract();
+      const result = await AppServer.updateContract({
+        id: data.id,
+        title: input.title,
+        ctnt: input.ctnt,
+        date: format(new Date(input.date), 'yyMMdd'),
+        time: input.time,
+        location: input.location,
+        head_count: input.head_count,
+      });
+      console.log('수정 결과 : ', result);
       goBack();
     } catch (error) {
       console.log('error : ', error);

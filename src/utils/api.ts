@@ -65,13 +65,47 @@ export class AppServer {
   };
 
   // 계약서 수정
-  static updateContract = async () => {
-    return this.api.put('/contract', { withCredentials: false });
+  static updateContract = async ({
+    id,
+    title,
+    ctnt,
+    date,
+    time,
+    location,
+    head_count,
+  }: {
+    id: number;
+    title: string;
+    ctnt: string;
+    date: string;
+    time: string;
+    location: string;
+    head_count: number;
+  }) => {
+    await axios({
+      method: 'put',
+      url: `http://localhost:3030/contract/${id}`,
+      data: {
+        title,
+        ctnt,
+        date: format(new Date(date), 'yyMMdd'),
+        time,
+        location,
+        head_count: Number(head_count),
+      },
+      headers: {
+        'Content-Type': 'application/json',
+        Options: '**',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
+      responseType: 'json',
+    });
   };
 
   // 계약서 삭제
-  static deleteContract = async () => {
-    return this.api.delete('/contract', { withCredentials: false });
+  static deleteContract = async (id: number) => {
+    return this.api.delete(`/contract/${id}`, { withCredentials: false });
   };
 
   // 계약서에 서명
