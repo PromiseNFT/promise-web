@@ -60,7 +60,7 @@ export const PromiseFrom = ({ data, promiseType }: Props): JSX.Element => {
   );
   const { isOpen, handleOpen, handleClose } = useModal();
 
-  const { goBack } = useHistory();
+  const { goBack, replace } = useHistory();
 
   const handleCreateClick = async () => {
     try {
@@ -117,7 +117,7 @@ export const PromiseFrom = ({ data, promiseType }: Props): JSX.Element => {
       try {
         const result = await AppServer.publishContract(data.id);
         alert('소중한 약속이 기록되었습니다! 꼭 지키세요!');
-        goBack();
+        replace('/');
       } catch (error) {
         console.log('error : ', error);
       }
@@ -138,7 +138,7 @@ export const PromiseFrom = ({ data, promiseType }: Props): JSX.Element => {
       if (data?.id) {
         const result = await AppServer.signContract(data.id);
         alert('참여완료!');
-        goBack();
+        replace('/');
         return;
       }
     }
