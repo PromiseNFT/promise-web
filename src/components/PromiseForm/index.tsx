@@ -115,6 +115,7 @@ export const PromiseFrom = ({ data, promiseType }: Props): JSX.Element => {
     if (data?.id) {
       try {
         const result = await AppServer.publishContract(data.id);
+        alert('소중한 약속이 기록되었습니다! 꼭 지키세요!');
         goBack();
       } catch (error) {
         console.log('error : ', error);
@@ -169,6 +170,7 @@ export const PromiseFrom = ({ data, promiseType }: Props): JSX.Element => {
   // useEffect(() => {
   //   setInput(data);
   // }, []);
+  const parsedAddressSigns = (data?.signs || []).map((v) => v.user_addr);
 
   return (
     <>
@@ -237,7 +239,9 @@ export const PromiseFrom = ({ data, promiseType }: Props): JSX.Element => {
           id='head_count'
           value={
             promiseType === 'read'
-              ? `${data?.signs?.length} / ${data.head_count}`
+              ? `${parsedAddressSigns.filter((v) => v !== null).length} / ${
+                  data.head_count
+                }`
               : input.head_count
               ? input.head_count
               : ''
@@ -254,20 +258,22 @@ export const PromiseFrom = ({ data, promiseType }: Props): JSX.Element => {
         </Button>
       )}
       {promiseType === 'read' &&
-        data?.signs?.some((v) => v.user_addr === auth?.user.token) &&
-        data.head_count === data?.signs?.length && (
+        parsedAddressSigns.some((v) => v === auth?.user.token) &&
+        data.head_count ===
+          parsedAddressSigns.filter((v) => v !== null).length && (
           <Button onClick={handleRecordClick} variant='contained'>
             소중한 약속 기록하기
           </Button>
         )}
       {promiseType === 'read' &&
-        data?.signs?.every((v) => v.user_addr !== auth?.user.token) && (
+        parsedAddressSigns.every((v) => v !== auth?.user.token) &&
+        parsedAddressSigns.filter((v) => v !== null).length <
+          data.head_count && (
           <Button onClick={handleParticipationClick} variant='contained'>
             약속에 참여하기
           </Button>
         )}
       {promiseType === 'edit' && (
-        // TODO 저장 권한은?
         <Button onClick={handleEditClick} variant='contained'>
           저장 하기
         </Button>

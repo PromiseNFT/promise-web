@@ -3,6 +3,8 @@
 import axios from 'axios';
 import { format } from 'date-fns';
 
+export const API_URL = 'http://localhost:3030';
+
 export class AppServer {
   static api = axios.create({
     responseType: 'json',
@@ -12,7 +14,7 @@ export class AppServer {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true,
     },
-    baseURL: 'http://localhost:3030',
+    baseURL: API_URL,
     timeout: 5000, // timeout 5초
   });
 
@@ -45,7 +47,7 @@ export class AppServer {
   }) => {
     await axios({
       method: 'post',
-      url: 'http://localhost:3030/contract',
+      url: `${API_URL}/contract`,
       data: {
         title,
         ctnt,
@@ -84,7 +86,7 @@ export class AppServer {
   }) => {
     await axios({
       method: 'put',
-      url: `http://localhost:3030/contract/${id}`,
+      url: `${API_URL}/contract/${id}`,
       data: {
         title,
         ctnt,
