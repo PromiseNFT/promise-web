@@ -136,6 +136,7 @@ export const PromiseFrom = ({ data, promiseType }: Props): JSX.Element => {
 
     if (wallet !== undefined && version === MAINNET_NETWORK_ID) {
       if (data?.id) {
+        AppServer.api.defaults.headers.common['User-Addr'] = wallet[0];
         const result = await AppServer.signContract(data.id);
         alert('참여완료!');
         replace('/');
