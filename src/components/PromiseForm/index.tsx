@@ -62,14 +62,15 @@ export const PromiseFrom = ({ data, promiseType }: Props): JSX.Element => {
   const { goBack } = useHistory();
 
   const handleCreateClick = async () => {
-    // 만들기 api
-    const isExistEmpty = Object.keys(input).some((item) => item === '');
-
-    if (isExistEmpty) {
-      alert('모두 입력해 주세요');
-    }
-
     try {
+      // 만들기 api
+      const isExistEmpty = Object.values(input).some((item) => item === '');
+
+      if (isExistEmpty) {
+        alert('모두 입력해 주세요');
+        return;
+      }
+
       const result = await AppServer.createContract({
         title: input.title,
         ctnt: input.ctnt,
