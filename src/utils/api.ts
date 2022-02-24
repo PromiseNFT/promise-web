@@ -112,11 +112,11 @@ export class AppServer {
 
   // 계약서에 서명
   static signContract = async (id: number) => {
-    return this.api.get(`/contract/${id}/sign`, { withCredentials: false });
+    return this.api.post(`/contract/${id}/sign`, { withCredentials: false });
   };
 
   // 계약서 kip17 발행
   static publishContract = async (id: number) => {
-    return this.api.get(`/contract/${id}/tx`, { withCredentials: false });
+    return this.api.post(`/contract/${id}/tx`, { withCredentials: false });
   };
 }

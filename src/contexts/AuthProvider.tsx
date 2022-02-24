@@ -31,12 +31,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     token: undefined,
   });
 
-  useEffect(() => {
-    if (user.token) {
-      axios.defaults.headers.common['User-Addr'] = user.token;
-    }
-  }, [user.token]);
-
   return (
     <AuthContext.Provider value={{ user, setUser }}>
       {children}

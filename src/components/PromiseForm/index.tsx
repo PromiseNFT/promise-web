@@ -25,6 +25,7 @@ import { format } from 'date-fns';
 import { ContractDetail, ParamType } from '../../types';
 import { useAuthContext } from '../../contexts/AuthProvider';
 import { AppServer } from '../../utils/api';
+import { MAINNET_NETWORK_ID } from '../HomeHeader/useConnectButton';
 
 const style: SxProps = {
   position: 'absolute',
@@ -124,39 +125,58 @@ export const PromiseFrom = ({ data, promiseType }: Props): JSX.Element => {
   };
 
   const handleParticipationClick = async () => {
-    const bappName = '약속';
-    const successLink = '';
-    const failLink = '';
-    const res = await prepare.auth({ bappName, successLink, failLink });
-    if (res.err) {
-      // 에러 처리
-      console.log('res.err : ', res.err);
-    } else if (res.request_key) {
-      // request_key 보관
-      request(res.request_key, () => alert('모바일 환경에서 실행해주세요'));
-      let time = 0;
-      const interval = setInterval(async () => {
-        if (time > 60) {
-          alert('서명 실패!');
-          clearInterval(interval);
-        }
-        const response = await getResult(res.request_key);
-        time++;
-        if (response.status === 'completed') {
-          try {
-            if (data?.id) {
-              const result = await AppServer.signContract(data.id);
-              alert('참여완료!');
-              goBack();
-            }
-            clearInterval(interval);
-          } catch (error) {
-            console.log('error : ', error);
-            clearInterval(interval);
-          }
-        }
-      }, 1000);
+    const { klaytn } = window;
+    if (klaytn === undefined) {
+      alert('카이카스를 설치해주세요.');
+      return false;
     }
+
+    const wallet = await klaytn.enable();
+    const version = await klaytn.networkVersion;
+
+    if (wallet !== undefined && version === MAINNET_NETWORK_ID) {
+      if (data?.id) {
+        const result = await AppServer.signContract(data.id);
+        alert('참여완료!');
+        goBack();
+        return;
+      }
+    }
+    alert('실패했습니다.');
+
+    // const bappName = '약속';
+    // const successLink = '';
+    // const failLink = '';
+    // const res = await prepare.auth({ bappName, successLink, failLink });
+    // if (res.err) {
+    //   // 에러 처리
+    //   console.log('res.err : ', res.err);
+    // } else if (res.request_key) {
+    //   // request_key 보관
+    //   request(res.request_key, () => alert('모바일 환경에서 실행해주세요'));
+    //   let time = 0;
+    //   const interval = setInterval(async () => {
+    //     if (time > 60) {
+    //       alert('서명 실패!');
+    //       clearInterval(interval);
+    //     }
+    //     const response = await getResult(res.request_key);
+    //     time++;
+    //     if (response.status === 'completed') {
+    //       try {
+    //         if (data?.id) {
+    //           const result = await AppServer.signContract(data.id);
+    //           alert('참여완료!');
+    //           goBack();
+    //         }
+    //         clearInterval(interval);
+    //       } catch (error) {
+    //         console.log('error : ', error);
+    //         clearInterval(interval);
+    //       }
+    //     }
+    //   }, 1000);
+    // }
   };
 
   const handleChangeText =
