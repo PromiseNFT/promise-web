@@ -1,6 +1,5 @@
 export interface ParamType {
   promiseType: 'create' | 'read' | 'edit';
-  id?: number;
 }
 
 export interface ContractDetail {

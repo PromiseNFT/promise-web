@@ -22,14 +22,13 @@ export const useAuthContext = () => useContext(AuthContext);
 
 interface AuthState {
   isAuthenticated: boolean;
-  token: string | null;
+  token: string | undefined;
 }
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<AuthState>({
     isAuthenticated: false,
-    token: '0x58e1A9Ad77367c528B5445d46fF9b2C0Be6673E8',
-    // token: null,
+    token: undefined,
   });
 
   useEffect(() => {

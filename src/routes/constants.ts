@@ -29,7 +29,7 @@ export const ROUTES: RoutesType[] = [
     exact: true,
   },
   {
-    path: '/createPromise',
+    path: '/contract/:key',
     component: CreatePromise,
     routeComponent: ROUTE_COMPONENTS.auth,
     exact: true,

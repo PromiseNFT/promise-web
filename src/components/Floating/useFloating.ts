@@ -11,7 +11,7 @@ export const useFloating = (): Return => {
 
   return {
     onClick: () => {
-      push('/createPromise', { promiseType: 'create' });
+      push('/contract/0', { promiseType: 'create' });
     },
   };
 };

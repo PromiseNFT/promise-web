@@ -46,7 +46,7 @@ export const CardComponent = ({
     >
       <Button
         onClick={() => {
-          push('/createPromise', { promiseType: 'read', id });
+          push(`/contract/${id}`, { promiseType: 'read' });
         }}
         color='inherit'
       >
@@ -76,9 +76,9 @@ export const CardComponent = ({
       </Button>
       <CardActions>
         <CopyToClipboard
-          text='ㄴㅇㄹㄴㅇㄹㄴㅇㄹ'
+          text={`${window.location.href}contract/${id}`}
           onCopy={() => {
-            alert('링크가 복사되었습니다.\n친구에게 공유해주세요!');
+            alert(`링크가 복사되었습니다.\n친구에게 공유해주세요!`);
           }}
         >
           <Share sx={{ fontSize: 40 }} />

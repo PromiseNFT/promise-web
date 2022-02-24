@@ -23,19 +23,21 @@ const initialData = {
 const CreatePromise = (): JSX.Element => {
   const auth = useAuthContext();
   const { goBack } = useHistory<ParamType>();
-  const { state } = useLocation<ParamType>();
+  const { state, pathname } = useLocation<ParamType>();
+  const splicedPathname = pathname.split('/');
+  const id = Number(splicedPathname[splicedPathname.length - 1]);
   const [promiseType, setPromiseType] = useState<ParamType['promiseType']>(
-    state.promiseType,
+    state?.promiseType || 'read',
   );
   const [data, setData] = useState<ContractDetail>();
 
   const getContractDetail = useCallback(async () => {
-    if (state.id) {
-      const result = await AppServer.getContractDetail(state.id);
+    if (id) {
+      const result = await AppServer.getContractDetail(id);
       console.log('상세 : ', result.data);
       setData(result.data || initialData);
     }
-  }, [state.id, setData]);
+  }, [id, setData]);
 
   const handleDelete = async (): Promise<void> => {
     if (data?.id !== undefined && confirm('약속을 삭제하시겠습니까?')) {
