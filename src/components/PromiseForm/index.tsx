@@ -26,6 +26,7 @@ import { ContractDetail, ParamType } from '../../types';
 import { useAuthContext } from '../../contexts/AuthProvider';
 import { AppServer } from '../../utils/api';
 import { MAINNET_NETWORK_ID } from '../HomeHeader/useConnectButton';
+import axios from 'axios';
 
 const style: SxProps = {
   position: 'absolute',
@@ -147,7 +148,7 @@ export const PromiseFrom = ({ data, promiseType }: Props): JSX.Element => {
 
     if (wallet !== undefined && version === MAINNET_NETWORK_ID) {
       if (data?.id) {
-        // AppServer.api.defaults.headers.common['User-Addr'] = wallet[0];
+        axios.defaults.headers.common['User-Addr'] = wallet[0];
         const result = await AppServer.signContract(
           auth?.user.token || '',
           data.id,
