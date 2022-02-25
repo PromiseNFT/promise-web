@@ -32,8 +32,11 @@ const CreatePromise = (): JSX.Element => {
   const [data, setData] = useState<ContractDetail>();
 
   const getContractDetail = useCallback(async () => {
-    if (id && auth?.user.token) {
-      const result = await AppServer.getContractDetail(auth.user.token, id);
+    if (id) {
+      const result = await AppServer.getContractDetail(
+        auth?.user.token || '',
+        id,
+      );
       console.log('상세 : ', result.data);
       setData(result.data || initialData);
     }

@@ -143,10 +143,15 @@ export const PromiseFrom = ({ data, promiseType }: Props): JSX.Element => {
     const wallet = await klaytn.enable();
     const version = await klaytn.networkVersion;
 
+    console.log('version : ', version);
+
     if (wallet !== undefined && version === MAINNET_NETWORK_ID) {
-      if (data?.id && auth?.user.token) {
+      if (data?.id) {
         // AppServer.api.defaults.headers.common['User-Addr'] = wallet[0];
-        const result = await AppServer.signContract(auth.user.token, data.id);
+        const result = await AppServer.signContract(
+          auth?.user.token || '',
+          data.id,
+        );
         alert('참여완료!');
         replace('/');
         return;

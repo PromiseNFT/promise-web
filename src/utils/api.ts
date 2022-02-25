@@ -24,19 +24,34 @@ export class AppServer {
 
   // 계약서 리스트 조회
   static getContracts = async (userAddress: string) => {
-    return await (
-      await this.api(userAddress)
-    ).get('/contract', {
+    return await axios({
+      method: 'get',
+      url: `${API_URL}/contract`,
+      headers: {
+        'Content-Type': 'application/json',
+        Options: '**',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+        'User-Addr': userAddress,
+      },
+      responseType: 'json',
       withCredentials: false,
     });
   };
 
   // 계약서 상세 조회
   static getContractDetail = async (userAddress: string, id: number) => {
-    console.log('id : ', id);
-    return await (
-      await this.api(userAddress)
-    ).get(`/contract/${id}`, {
+    return await axios({
+      method: 'get',
+      url: `${API_URL}/contract/${id}`,
+      headers: {
+        'Content-Type': 'application/json',
+        Options: '**',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+        'User-Addr': userAddress,
+      },
+      responseType: 'json',
       withCredentials: false,
     });
   };
@@ -59,7 +74,7 @@ export class AppServer {
     location: string;
     head_count: number;
   }) => {
-    await axios({
+    return await axios({
       method: 'post',
       url: `${API_URL}/contract`,
       data: {
@@ -101,7 +116,7 @@ export class AppServer {
     location: string;
     head_count: number;
   }) => {
-    await axios({
+    return await axios({
       method: 'put',
       url: `${API_URL}/contract/${id}`,
       data: {
@@ -125,27 +140,51 @@ export class AppServer {
 
   // 계약서 삭제
   static deleteContract = async (userAddress: string, id: number) => {
-    return await (
-      await this.api(userAddress)
-    ).delete(`/contract/${id}`, {
+    return await axios({
+      method: 'delete',
+      url: `${API_URL}/contract/${id}`,
+      headers: {
+        'Content-Type': 'application/json',
+        Options: '**',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+        'User-Addr': userAddress,
+      },
+      responseType: 'json',
       withCredentials: false,
     });
   };
 
   // 계약서에 서명
   static signContract = async (userAddress: string, id: number) => {
-    return await (
-      await this.api(userAddress)
-    ).post(`/contract/${id}/sign`, {
+    return await axios({
+      method: 'post',
+      url: `${API_URL}/contract/${id}/sign`,
+      headers: {
+        'Content-Type': 'application/json',
+        Options: '**',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+        'User-Addr': userAddress,
+      },
+      responseType: 'json',
       withCredentials: false,
     });
   };
 
   // 계약서 kip17 발행
   static publishContract = async (userAddress: string, id: number) => {
-    return await (
-      await this.api(userAddress)
-    ).post(`/contract/${id}/tx`, {
+    return await axios({
+      method: 'post',
+      url: `${API_URL}/contract/${id}/tx`,
+      headers: {
+        'Content-Type': 'application/json',
+        Options: '**',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+        'User-Addr': userAddress,
+      },
+      responseType: 'json',
       withCredentials: false,
     });
   };
