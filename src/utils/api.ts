@@ -4,6 +4,7 @@ import axios from 'axios';
 import { format } from 'date-fns';
 
 export const API_URL = 'https://api.gssoft79.xyz';
+// Second URL : https://promisenft.ml
 
 export class AppServer {
   static api = axios.create({
