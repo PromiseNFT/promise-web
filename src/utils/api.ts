@@ -3,34 +3,47 @@
 import axios from 'axios';
 import { format } from 'date-fns';
 
-export const API_URL = 'https://3.34.134.170';
+// export const API_URL = 'https://3.34.134.170';
+export const API_URL = 'http://localhost:3030';
 
 export class AppServer {
-  static api = axios.create({
-    responseType: 'json',
-    headers: {
-      'Content-Type': 'application/json',
-      Options: '**',
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Credentials': true,
-    },
-    baseURL: API_URL,
-    timeout: 5000, // timeout 5초
-  });
+  static api = async (userAddress: string) => {
+    return await axios.create({
+      responseType: 'json',
+      headers: {
+        'Content-Type': 'application/json',
+        Options: '**',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+        'User-Addr': userAddress,
+      },
+      baseURL: API_URL,
+      timeout: 5000, // timeout 5초
+    });
+  };
 
   // 계약서 리스트 조회
-  static getContracts = async () => {
-    return this.api.get('/contract', { withCredentials: false });
+  static getContracts = async (userAddress: string) => {
+    return await (
+      await this.api(userAddress)
+    ).get('/contract', {
+      withCredentials: false,
+    });
   };
 
   // 계약서 상세 조회
-  static getContractDetail = async (id: number) => {
+  static getContractDetail = async (userAddress: string, id: number) => {
     console.log('id : ', id);
-    return this.api.get(`/contract/${id}`, { withCredentials: false });
+    return await (
+      await this.api(userAddress)
+    ).get(`/contract/${id}`, {
+      withCredentials: false,
+    });
   };
 
   // 계약서 생성
   static createContract = async ({
+    userAddress,
     title,
     ctnt,
     date,
@@ -38,6 +51,7 @@ export class AppServer {
     location,
     head_count,
   }: {
+    userAddress: string;
     title: string;
     ctnt: string;
     date: string;
@@ -61,6 +75,7 @@ export class AppServer {
         Options: '**',
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Credentials': true,
+        'User-Addr': userAddress,
       },
       responseType: 'json',
     });
@@ -68,6 +83,7 @@ export class AppServer {
 
   // 계약서 수정
   static updateContract = async ({
+    userAddress,
     id,
     title,
     ctnt,
@@ -76,6 +92,7 @@ export class AppServer {
     location,
     head_count,
   }: {
+    userAddress: string;
     id: number;
     title: string;
     ctnt: string;
@@ -100,23 +117,36 @@ export class AppServer {
         Options: '**',
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Credentials': true,
+        'User-Addr': userAddress,
       },
       responseType: 'json',
     });
   };
 
   // 계약서 삭제
-  static deleteContract = async (id: number) => {
-    return this.api.delete(`/contract/${id}`, { withCredentials: false });
+  static deleteContract = async (userAddress: string, id: number) => {
+    return await (
+      await this.api(userAddress)
+    ).delete(`/contract/${id}`, {
+      withCredentials: false,
+    });
   };
 
   // 계약서에 서명
-  static signContract = async (id: number) => {
-    return this.api.post(`/contract/${id}/sign`, { withCredentials: false });
+  static signContract = async (userAddress: string, id: number) => {
+    return await (
+      await this.api(userAddress)
+    ).post(`/contract/${id}/sign`, {
+      withCredentials: false,
+    });
   };
 
   // 계약서 kip17 발행
-  static publishContract = async (id: number) => {
-    return this.api.post(`/contract/${id}/tx`, { withCredentials: false });
+  static publishContract = async (userAddress: string, id: number) => {
+    return await (
+      await this.api(userAddress)
+    ).post(`/contract/${id}/tx`, {
+      withCredentials: false,
+    });
   };
 }

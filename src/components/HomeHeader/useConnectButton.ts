@@ -74,7 +74,7 @@ export const useConnectButton = (): Return => {
 
     if (wallet !== undefined && version === MAINNET_NETWORK_ID) {
       console.log('wallet[0] : ', wallet[0]);
-      AppServer.api.defaults.headers.common['User-Addr'] = wallet[0];
+      // AppServer.api.defaults.headers.common['User-Addr'] = wallet[0];
       auth?.setUser((prev) => {
         return { ...prev, token: wallet[0] };
       });

@@ -32,16 +32,20 @@ const CreatePromise = (): JSX.Element => {
   const [data, setData] = useState<ContractDetail>();
 
   const getContractDetail = useCallback(async () => {
-    if (id) {
-      const result = await AppServer.getContractDetail(id);
+    if (id && auth?.user.token) {
+      const result = await AppServer.getContractDetail(auth.user.token, id);
       console.log('상세 : ', result.data);
       setData(result.data || initialData);
     }
-  }, [id, setData]);
+  }, [id, setData, auth?.user.token]);
 
   const handleDelete = async (): Promise<void> => {
-    if (data?.id !== undefined && confirm('약속을 삭제하시겠습니까?')) {
-      await AppServer.deleteContract(data.id);
+    if (
+      data?.id !== undefined &&
+      confirm('약속을 삭제하시겠습니까?') &&
+      auth?.user.token
+    ) {
+      await AppServer.deleteContract(auth.user.token, data.id);
       goBack();
     }
   };

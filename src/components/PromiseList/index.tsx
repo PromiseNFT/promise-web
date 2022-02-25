@@ -1,24 +1,31 @@
 import { Box, Container, styled, Typography } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
+import { useAuthContext } from '../../contexts/AuthProvider';
 import { AppServer } from '../../utils/api';
 import { CardComponent, CardType } from '../Cards/CardComponent';
 
 export const PromiseList = (): JSX.Element => {
+  const auth = useAuthContext();
   const [data, setData] = useState([]);
 
   const getData = useCallback(async (): Promise<void> => {
     try {
-      const result = await AppServer.getContracts();
-      console.log('result : ', result.data);
-      setData(result.data);
+      console.log('auth?.user.token : ', auth?.user.token);
+      if (auth?.user.token) {
+        const result = await AppServer.getContracts(auth.user.token);
+        console.log('result : ', result.data);
+        setData(result.data);
+      }
     } catch (error) {
       console.log('error : ', error);
     }
-  }, [setData]);
+  }, [setData, auth]);
 
   useEffect(() => {
-    getData();
-  }, [getData]);
+    if (auth?.user.token) {
+      getData();
+    }
+  }, [getData, auth]);
 
   const cards = data.map(({ id, title, location, date, time }: CardType) => {
     return (

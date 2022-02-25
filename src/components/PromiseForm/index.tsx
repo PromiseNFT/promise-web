@@ -67,12 +67,13 @@ export const PromiseFrom = ({ data, promiseType }: Props): JSX.Element => {
       // 만들기 api
       const isExistEmpty = Object.values(input).some((item) => item === '');
 
-      if (isExistEmpty) {
+      if (isExistEmpty || auth?.user.token === undefined) {
         alert('모두 입력해 주세요');
         return;
       }
 
       const result = await AppServer.createContract({
+        userAddress: auth.user.token,
         title: input.title,
         ctnt: input.ctnt,
         date: input.date as string,
@@ -90,13 +91,18 @@ export const PromiseFrom = ({ data, promiseType }: Props): JSX.Element => {
     // 수정 api
     const isExistEmpty = Object.keys(input).some((item) => item === '');
 
-    if (isExistEmpty || data?.id === undefined) {
+    if (
+      isExistEmpty ||
+      data?.id === undefined ||
+      auth?.user.token === undefined
+    ) {
       alert('모두 입력해 주세요');
       return;
     }
 
     try {
       const result = await AppServer.updateContract({
+        userAddress: auth.user.token,
         id: data.id,
         title: input.title,
         ctnt: input.ctnt,
@@ -113,9 +119,12 @@ export const PromiseFrom = ({ data, promiseType }: Props): JSX.Element => {
   };
 
   const handleRecordClick = async () => {
-    if (data?.id) {
+    if (data?.id && auth?.user.token) {
       try {
-        const result = await AppServer.publishContract(data.id);
+        const result = await AppServer.publishContract(
+          auth.user.token,
+          data.id,
+        );
         alert('소중한 약속이 기록되었습니다! 꼭 지키세요!');
         replace('/');
       } catch (error) {
@@ -135,9 +144,9 @@ export const PromiseFrom = ({ data, promiseType }: Props): JSX.Element => {
     const version = await klaytn.networkVersion;
 
     if (wallet !== undefined && version === MAINNET_NETWORK_ID) {
-      if (data?.id) {
-        AppServer.api.defaults.headers.common['User-Addr'] = wallet[0];
-        const result = await AppServer.signContract(data.id);
+      if (data?.id && auth?.user.token) {
+        // AppServer.api.defaults.headers.common['User-Addr'] = wallet[0];
+        const result = await AppServer.signContract(auth.user.token, data.id);
         alert('참여완료!');
         replace('/');
         return;
