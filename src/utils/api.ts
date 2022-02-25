@@ -3,8 +3,8 @@
 import axios from 'axios';
 import { format } from 'date-fns';
 
-// export const API_URL = 'https://3.34.134.170';
-export const API_URL = 'http://localhost:3030';
+export const API_URL = 'https://api.gssoft79.xyz';
+// Second URL : https://promisenft.ml
 
 export class AppServer {
   static api = async (userAddress: string) => {
