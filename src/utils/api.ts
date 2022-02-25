@@ -3,7 +3,7 @@
 import axios from 'axios';
 import { format } from 'date-fns';
 
-export const API_URL = 'http://3.34.134.170:3030';
+export const API_URL = 'https://3.34.134.170:3030';
 
 export class AppServer {
   static api = axios.create({
