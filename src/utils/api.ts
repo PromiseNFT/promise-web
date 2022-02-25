@@ -3,7 +3,7 @@
 import axios from 'axios';
 import { format } from 'date-fns';
 
-export const API_URL = 'https://promisenft.ml/';
+export const API_URL = 'https://api.gssoft79.xyz';
 
 export class AppServer {
   static api = axios.create({
